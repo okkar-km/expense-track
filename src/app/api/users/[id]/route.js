@@ -95,7 +95,7 @@ export async function PATCH(request, { params }) {
       user.email = normalizedEmail;
     }
 
-    if (password !== undefined) {
+    if (password !== undefined && password.trim() !== "") {
       user.password = password;
     }
 
