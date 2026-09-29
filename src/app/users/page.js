@@ -49,7 +49,11 @@ export default function UsersPage() {
 
   // Load users when page opens
   useEffect(() => {
-    loadUsers();
+    async function init() {
+      await loadUsers();
+    }
+
+    init();
   }, []);
 
 

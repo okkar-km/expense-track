@@ -57,6 +57,36 @@ export default function DashboardPage() {
     0
   );
 
+  // Current month expenses
+  const now = new Date();
+
+  const currentMonthExpenses = expenses.filter((expense) => {
+    const expenseDate = new Date(expense.date);
+
+    return (
+      expenseDate.getFullYear() === now.getFullYear() &&
+      expenseDate.getMonth() === now.getMonth()
+    );
+  });
+
+  const currentMonthTotal = currentMonthExpenses.reduce(
+    (total, expense) => total + Number(expense.amount || 0),
+    0
+  );
+
+  // Spending by category
+  const spendingByCategory = {};
+
+  expenses.forEach((expense) => {
+    const categoryName = expense.categoryId?.name || "Uncategorized";
+
+    if (!spendingByCategory[categoryName]) {
+      spendingByCategory[categoryName] = 0;
+    }
+
+    spendingByCategory[categoryName] += Number(expense.amount || 0);
+  });
+
   if (loading) {
     return <main>Loading dashboard...</main>;
   }
@@ -93,8 +123,52 @@ export default function DashboardPage() {
           <h2>฿{totalExpenses.toLocaleString()}</h2>
           <p>Total Amount</p>
         </div>
+
+        <div>
+          <h2>฿{currentMonthTotal.toLocaleString()}</h2>
+          <p>This Month</p>
+        </div>
       </section>
 
+      <section>
+        <h2>Spending by Category</h2>
+
+        {Object.keys(spendingByCategory).length === 0 ? (
+          <p>No category spending recorded.</p>
+        ) : (
+          <ul>
+            {Object.entries(spendingByCategory).map(
+              ([category, amount]) => (
+                <li key={category}>
+                  <strong>{category}</strong>
+                  {" - "}
+                  ฿{amount.toLocaleString()}
+                </li>
+              )
+            )}
+          </ul>
+        )}
+      </section>
+
+      {/* Added */}
+      <section>
+        <h2>Current Month Expenses</h2>
+
+        {currentMonthExpenses.length === 0 ? (
+          <p>No expenses recorded this month.</p>
+        ) : (
+          <ul>
+            {currentMonthExpenses.map((expense) => (
+              <li key={expense._id}>
+                <strong>{expense.title}</strong>
+                {" - "}
+                ฿{Number(expense.amount).toLocaleString()}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      
       <section>
         <h2>Recent Expenses</h2>
 

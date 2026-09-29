@@ -46,7 +46,11 @@ export default function CategoriesPage() {
 
   // Load categories when page opens
   useEffect(() => {
-    loadCategories();
+    async function init() {
+      await loadCategories();
+    }
+
+    init();
   }, []);
 
   // RESET FORM

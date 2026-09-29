@@ -12,7 +12,7 @@ export default function Navbar() {
       <Link href="/users">
         Users
       </Link>
-
+      
       {" | "}
 
       <Link href="/categories">
