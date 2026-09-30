@@ -328,10 +328,10 @@ export default function ExpensesPage() {
   // LOADING
   if (loading) {
     return (
-      <main>
-        <h1>Expense Management</h1>
+      <main className="page">
+        <h1 className="page__title">Expense Management</h1>
 
-        <p>
+        <p className="page__subtitle">
           Loading expenses...
         </p>
       </main>
@@ -341,11 +341,11 @@ export default function ExpensesPage() {
 
   // PAGE
   return (
-    <main style={{ padding: "30px" }}>
+    <main className="page">
 
-      <h1>Expense Management</h1>
+      <h1 className="page__title">Expense Management</h1>
 
-      <p>
+      <p className="page__subtitle">
         Create, view, update, search, and
         delete expenses.
       </p>
@@ -354,13 +354,13 @@ export default function ExpensesPage() {
       {/* MESSAGES */}
 
       {error && (
-        <p style={{ color: "red" }}>
+        <p className="alert alert--error">
           {error}
         </p>
       )}
 
       {message && (
-        <p style={{ color: "green" }}>
+        <p className="alert alert--success">
           {message}
         </p>
       )}
@@ -368,25 +368,23 @@ export default function ExpensesPage() {
 
       {/* EXPENSE FORM */}
 
-      <section>
+      <section className="panel">
 
-        <h2>
+        <h2 className="panel__title">
           {editingId
             ? "Edit Expense"
             : "Create Expense"}
         </h2>
 
 
-        <form onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
 
           {/* TITLE */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Title
             </label>
-
-            <br />
 
             <input
               type="text"
@@ -400,17 +398,12 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* AMOUNT */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Amount
             </label>
-
-            <br />
 
             <input
               type="number"
@@ -426,17 +419,12 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* DATE */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Date
             </label>
-
-            <br />
 
             <input
               type="date"
@@ -449,17 +437,12 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* DESCRIPTION */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Description
             </label>
-
-            <br />
 
             <textarea
               value={description}
@@ -474,17 +457,12 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* USER */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               User
             </label>
-
-            <br />
 
             <select
               value={userId}
@@ -509,17 +487,12 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* CATEGORY */}
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Category
             </label>
-
-            <br />
 
             <select
               value={categoryId}
@@ -548,12 +521,10 @@ export default function ExpensesPage() {
           </div>
 
 
-          <br />
-
-
           {/* SUBMIT */}
 
           <button
+            className="btn btn--primary"
             type="submit"
             disabled={saving}
           >
@@ -569,11 +540,9 @@ export default function ExpensesPage() {
 
           {editingId && (
             <button
+              className="btn btn--secondary"
               type="button"
               onClick={resetForm}
-              style={{
-                marginLeft: "10px",
-              }}
             >
               Cancel
             </button>
@@ -584,16 +553,14 @@ export default function ExpensesPage() {
       </section>
 
 
-      <hr />
-
-
       {/* SEARCH */}
 
-      <section>
+      <section className="panel">
 
-        <h2>Expenses</h2>
+        <h2 className="panel__title">Expenses</h2>
 
         <input
+          className="input"
           type="text"
           value={search}
           onChange={(event) =>
@@ -605,12 +572,9 @@ export default function ExpensesPage() {
       </section>
 
 
-      <br />
-
-
       {/* EXPENSE TABLE */}
 
-      <section>
+      <section className="panel panel--flush">
 
         {filteredExpenses.length === 0 ? (
 
@@ -620,10 +584,7 @@ export default function ExpensesPage() {
 
         ) : (
 
-          <table
-            border="1"
-            cellPadding="10"
-          >
+          <table className="table">
 
             <thead>
 
@@ -703,6 +664,7 @@ export default function ExpensesPage() {
                     <td>
 
                       <button
+                        className="btn btn--secondary"
                         onClick={() =>
                           handleEdit(
                             expense
@@ -714,14 +676,12 @@ export default function ExpensesPage() {
 
 
                       <button
+                        className="btn btn--danger"
                         onClick={() =>
                           handleDelete(
                             expense._id
                           )
                         }
-                        style={{
-                          marginLeft: "10px",
-                        }}
                       >
                         Delete
                       </button>

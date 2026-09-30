@@ -208,9 +208,9 @@ export default function UsersPage() {
   // LOADING
   if (loading) {
     return (
-      <main>
-        <h1>User Management</h1>
-        <p>Loading users...</p>
+      <main className="page">
+        <h1 className="page__title">User Management</h1>
+        <p className="page__subtitle">Loading users...</p>
       </main>
     );
   }
@@ -218,11 +218,11 @@ export default function UsersPage() {
 
   // PAGE
   return (
-    <main style={{ padding: "30px" }}>
+    <main className="page">
 
-      <h1>User Management</h1>
+      <h1 className="page__title">User Management</h1>
 
-      <p>
+      <p className="page__subtitle">
         Create, view, update, search, and delete
         system users.
       </p>
@@ -231,13 +231,13 @@ export default function UsersPage() {
       {/* MESSAGES */}
 
       {error && (
-        <p style={{ color: "red" }}>
+        <p className="alert alert--error">
           {error}
         </p>
       )}
 
       {message && (
-        <p style={{ color: "green" }}>
+        <p className="alert alert--success">
           {message}
         </p>
       )}
@@ -245,21 +245,19 @@ export default function UsersPage() {
 
       {/* USER FORM */}
 
-      <section>
-        <h2>
+      <section className="panel">
+        <h2 className="panel__title">
           {editingId
             ? "Edit User"
             : "Create User"}
         </h2>
 
-        <form onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
 
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Name
             </label>
-
-            <br />
 
             <input
               type="text"
@@ -273,15 +271,10 @@ export default function UsersPage() {
           </div>
 
 
-          <br />
-
-
-          <div>
-            <label>
+          <div className="form__field">
+            <label className="form__label">
               Email
             </label>
-
-            <br />
 
             <input
               type="email"
@@ -295,12 +288,10 @@ export default function UsersPage() {
           </div>
 
 
-          <br />
-
-          <div>
-            <label>Password</label>
-
-            <br />
+          <div className="form__field">
+            <label className="form__label">
+              Password
+            </label>
 
             <input
                 type="password"
@@ -317,10 +308,9 @@ export default function UsersPage() {
             />
           </div>
 
-          <br />
-
 
           <button
+            className="btn btn--primary"
             type="submit"
             disabled={saving}
           >
@@ -334,9 +324,9 @@ export default function UsersPage() {
 
           {editingId && (
             <button
+              className="btn btn--secondary"
               type="button"
               onClick={resetForm}
-              style={{ marginLeft: "10px" }}
             >
               Cancel
             </button>
@@ -346,15 +336,13 @@ export default function UsersPage() {
       </section>
 
 
-      <hr />
-
-
       {/* SEARCH */}
 
-      <section>
-        <h2>Users</h2>
+      <section className="panel">
+        <h2 className="panel__title">Users</h2>
 
         <input
+          className="input"
           type="text"
           value={search}
           onChange={(event) =>
@@ -365,12 +353,9 @@ export default function UsersPage() {
       </section>
 
 
-      <br />
-
-
       {/* USER TABLE */}
 
-      <section>
+      <section className="panel panel--flush">
 
         {filteredUsers.length === 0 ? (
           <p>
@@ -378,7 +363,7 @@ export default function UsersPage() {
           </p>
         ) : (
 
-          <table border="1" cellPadding="10">
+          <table className="table">
 
             <thead>
               <tr>
@@ -415,6 +400,7 @@ export default function UsersPage() {
                   <td>
 
                     <button
+                      className="btn btn--secondary"
                       onClick={() =>
                         handleEdit(user)
                       }
@@ -423,12 +409,10 @@ export default function UsersPage() {
                     </button>
 
                     <button
+                      className="btn btn--danger"
                       onClick={() =>
                         handleDelete(user._id)
                       }
-                      style={{
-                        marginLeft: "10px",
-                      }}
                     >
                       Delete
                     </button>

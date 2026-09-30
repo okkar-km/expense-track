@@ -88,58 +88,72 @@ export default function DashboardPage() {
   });
 
   if (loading) {
-    return <main>Loading dashboard...</main>;
+    return (
+      <main className="page">Loading dashboard...</main>
+    );
   }
 
   if (error) {
-    return <main>{error}</main>;
+    return <main className="page">{error}</main>;
   }
 
   return (
-    <main>
-      <h1>Expense Management Dashboard</h1>
+    <main className="page">
+      <h1 className="page__title">
+        Expense Management Dashboard
+      </h1>
 
-      <p>
+      <p className="page__subtitle">
         Overview of users, categories, and recorded expenses.
       </p>
 
-      <section>
-        <div>
-          <h2>{users.length}</h2>
-          <p>Total Users</p>
+      <section className="tiles">
+        <div className="tiles__item">
+          <h2 className="tiles__value">{users.length}</h2>
+          <p className="tiles__label">Total Users</p>
         </div>
 
-        <div>
-          <h2>{categories.length}</h2>
-          <p>Total Categories</p>
+        <div className="tiles__item">
+          <h2 className="tiles__value">
+            {categories.length}
+          </h2>
+          <p className="tiles__label">Total Categories</p>
         </div>
 
-        <div>
-          <h2>{expenses.length}</h2>
-          <p>Total Expenses</p>
+        <div className="tiles__item">
+          <h2 className="tiles__value">
+            {expenses.length}
+          </h2>
+          <p className="tiles__label">Total Expenses</p>
         </div>
 
-        <div>
-          <h2>฿{totalExpenses.toLocaleString()}</h2>
-          <p>Total Amount</p>
+        <div className="tiles__item">
+          <h2 className="tiles__value">
+            ฿{totalExpenses.toLocaleString()}
+          </h2>
+          <p className="tiles__label">Total Amount</p>
         </div>
 
-        <div>
-          <h2>฿{currentMonthTotal.toLocaleString()}</h2>
-          <p>This Month</p>
+        <div className="tiles__item">
+          <h2 className="tiles__value">
+            ฿{currentMonthTotal.toLocaleString()}
+          </h2>
+          <p className="tiles__label">This Month</p>
         </div>
       </section>
 
-      <section>
-        <h2>Spending by Category</h2>
+      <section className="panel">
+        <h2 className="panel__title">
+          Spending by Category
+        </h2>
 
         {Object.keys(spendingByCategory).length === 0 ? (
           <p>No category spending recorded.</p>
         ) : (
-          <ul>
+          <ul className="list">
             {Object.entries(spendingByCategory).map(
               ([category, amount]) => (
-                <li key={category}>
+                <li className="list__item" key={category}>
                   <strong>{category}</strong>
                   {" - "}
                   ฿{amount.toLocaleString()}
@@ -150,16 +164,17 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* Added */}
-      <section>
-        <h2>Current Month Expenses</h2>
+      <section className="panel">
+        <h2 className="panel__title">
+          Current Month Expenses
+        </h2>
 
         {currentMonthExpenses.length === 0 ? (
           <p>No expenses recorded this month.</p>
         ) : (
-          <ul>
+          <ul className="list">
             {currentMonthExpenses.map((expense) => (
-              <li key={expense._id}>
+              <li className="list__item" key={expense._id}>
                 <strong>{expense.title}</strong>
                 {" - "}
                 ฿{Number(expense.amount).toLocaleString()}
@@ -168,16 +183,16 @@ export default function DashboardPage() {
           </ul>
         )}
       </section>
-      
-      <section>
-        <h2>Recent Expenses</h2>
+
+      <section className="panel">
+        <h2 className="panel__title">Recent Expenses</h2>
 
         {expenses.length === 0 ? (
           <p>No expenses recorded.</p>
         ) : (
-          <ul>
+          <ul className="list">
             {expenses.slice(0, 5).map((expense) => (
-              <li key={expense._id}>
+              <li className="list__item" key={expense._id}>
                 <strong>{expense.title}</strong>
                 {" - "}
                 ฿{Number(expense.amount).toLocaleString()}

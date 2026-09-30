@@ -200,19 +200,19 @@ export default function CategoriesPage() {
   // LOADING
   if (loading) {
     return (
-      <main>
-        <h1>Category Management</h1>
-        <p>Loading categories...</p>
+      <main className="page">
+        <h1 className="page__title">Category Management</h1>
+        <p className="page__subtitle">Loading categories...</p>
       </main>
     );
   }
 
   // PAGE
   return (
-    <main style={{ padding: "30px" }}>
-      <h1>Category Management</h1>
+    <main className="page">
+      <h1 className="page__title">Category Management</h1>
 
-      <p>
+      <p className="page__subtitle">
         Create, view, update, search, and delete
         expense categories.
       </p>
@@ -220,31 +220,31 @@ export default function CategoriesPage() {
       {/* MESSAGES */}
 
       {error && (
-        <p style={{ color: "red" }}>
+        <p className="alert alert--error">
           {error}
         </p>
       )}
 
       {message && (
-        <p style={{ color: "green" }}>
+        <p className="alert alert--success">
           {message}
         </p>
       )}
 
       {/* CATEGORY FORM */}
 
-      <section>
-        <h2>
+      <section className="panel">
+        <h2 className="panel__title">
           {editingId
             ? "Edit Category"
             : "Create Category"}
         </h2>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name</label>
-
-            <br />
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form__field">
+            <label className="form__label">
+              Name
+            </label>
 
             <input
               type="text"
@@ -257,12 +257,11 @@ export default function CategoriesPage() {
             />
           </div>
 
-          <br />
 
-          <div>
-            <label>Description</label>
-
-            <br />
+          <div className="form__field">
+            <label className="form__label">
+              Description
+            </label>
 
             <textarea
               value={description}
@@ -274,9 +273,9 @@ export default function CategoriesPage() {
             />
           </div>
 
-          <br />
 
           <button
+            className="btn btn--primary"
             type="submit"
             disabled={saving}
           >
@@ -289,9 +288,9 @@ export default function CategoriesPage() {
 
           {editingId && (
             <button
+              className="btn btn--secondary"
               type="button"
               onClick={resetForm}
-              style={{ marginLeft: "10px" }}
             >
               Cancel
             </button>
@@ -299,14 +298,14 @@ export default function CategoriesPage() {
         </form>
       </section>
 
-      <hr />
 
       {/* SEARCH */}
 
-      <section>
-        <h2>Categories</h2>
+      <section className="panel">
+        <h2 className="panel__title">Categories</h2>
 
         <input
+          className="input"
           type="text"
           value={search}
           onChange={(event) =>
@@ -316,15 +315,14 @@ export default function CategoriesPage() {
         />
       </section>
 
-      <br />
 
       {/* CATEGORY TABLE */}
 
-      <section>
+      <section className="panel panel--flush">
         {filteredCategories.length === 0 ? (
           <p>No categories found.</p>
         ) : (
-          <table border="1" cellPadding="10">
+          <table className="table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -356,6 +354,7 @@ export default function CategoriesPage() {
 
                     <td>
                       <button
+                        className="btn btn--secondary"
                         onClick={() =>
                           handleEdit(category)
                         }
@@ -364,14 +363,12 @@ export default function CategoriesPage() {
                       </button>
 
                       <button
+                        className="btn btn--danger"
                         onClick={() =>
                           handleDelete(
                             category._id
                           )
                         }
-                        style={{
-                          marginLeft: "10px",
-                        }}
                       >
                         Delete
                       </button>
