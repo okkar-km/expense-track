@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import type { ExpenseDTO, UserDTO, CategoryDTO } from "@/types";
+import { errorMessage } from "@/utils/errors";
 
 export default function ExpensesPage() {
   // Expense data
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState<ExpenseDTO[]>([]);
 
   // Users and categories for dropdowns
-  const [users, setUsers] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [users, setUsers] = useState<UserDTO[]>([]);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   // Form fields
   const [title, setTitle] = useState("");
@@ -19,7 +21,7 @@ export default function ExpensesPage() {
   const [categoryId, setCategoryId] = useState("");
 
   // Editing state
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Search
   const [search, setSearch] = useState("");
@@ -124,7 +126,7 @@ export default function ExpensesPage() {
 
 
   // CREATE / UPDATE EXPENSE
-  async function handleSubmit(event) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -195,7 +197,7 @@ export default function ExpensesPage() {
       resetForm();
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     } finally {
       setSaving(false);
     }
@@ -203,7 +205,7 @@ export default function ExpensesPage() {
 
 
   // EDIT EXPENSE
-  function handleEdit(expense) {
+  function handleEdit(expense: ExpenseDTO) {
     setEditingId(expense._id);
 
     setTitle(expense.title || "");
@@ -230,17 +232,9 @@ export default function ExpensesPage() {
     );
 
     // Because GET uses populate()
-    setUserId(
-      expense.userId?._id ||
-        expense.userId ||
-        ""
-    );
+    setUserId(expense.userId._id);
 
-    setCategoryId(
-      expense.categoryId?._id ||
-        expense.categoryId ||
-        ""
-    );
+    setCategoryId(expense.categoryId._id);
 
     setMessage("");
     setError("");
@@ -253,7 +247,7 @@ export default function ExpensesPage() {
 
 
   // DELETE EXPENSE
-  async function handleDelete(expenseId) {
+  async function handleDelete(expenseId: string) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this expense?"
     );
@@ -289,7 +283,7 @@ export default function ExpensesPage() {
       await loadExpenses();
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     }
   }
 
@@ -452,7 +446,7 @@ export default function ExpensesPage() {
                 )
               }
               placeholder="Enter description"
-              rows="4"
+              rows={4}
             />
           </div>
 

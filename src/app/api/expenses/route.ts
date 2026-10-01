@@ -4,16 +4,17 @@ import Expense from "@/models/Expense";
 import User from "@/models/User";
 import Category from "@/models/Category";
 import mongoose from "mongoose";
+import type { QueryFilter } from "mongoose";
+import type { IExpense, IExpenseInput } from "@/types";
 
-
-function isValidId(id) {
+function isValidId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
 
 // GET /api/expenses
 // Get all expenses
-export async function GET(request) {
+export async function GET(request: Request) {
   try {
     await connectDB();
 
@@ -25,7 +26,7 @@ export async function GET(request) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
 
-    const filter = {};
+    const filter: QueryFilter<IExpense> = {};
 
     // Search by expense title or description
     if (search) {
@@ -123,11 +124,11 @@ export async function GET(request) {
 
 // POST /api/expenses
 // Create a new expense
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     await connectDB();
 
-    const body = await request.json();
+    const body = await request.json() as Partial<IExpenseInput>;
 
     const {
       title,

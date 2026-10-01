@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import User from "../src/models/User.js";
-import Category from "../src/models/Category.js";
-import Expense from "../src/models/Expense.js";
+import User from "../src/models/User.ts";
+import Category from "../src/models/Category.ts";
+import Expense from "../src/models/Expense.ts";
 
 const MONGODB_URI =
   process.env.MONGODB_URI ||

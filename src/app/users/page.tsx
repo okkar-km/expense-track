@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import type { UserDTO } from "@/types";
+import { errorMessage } from "@/utils/errors";
 
 export default function UsersPage() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserDTO[]>([]);
 
   // Form fields
   const [name, setName] = useState("");
@@ -11,7 +13,7 @@ export default function UsersPage() {
   const [password, setPassword] = useState("");
 
   // editing an existing user
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Search
   const [search, setSearch] = useState("");
@@ -69,7 +71,7 @@ export default function UsersPage() {
 
 
   // CREATE / UPDATE USER
-  async function handleSubmit(event) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -130,7 +132,7 @@ export default function UsersPage() {
 
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     } finally {
       setSaving(false);
     }
@@ -138,7 +140,7 @@ export default function UsersPage() {
 
 
   // EDIT USER
-  function handleEdit(user) {
+  function handleEdit(user: UserDTO) {
     setEditingId(user._id);
     setName(user.name || "");
     setEmail(user.email || "");
@@ -156,7 +158,7 @@ export default function UsersPage() {
 
 
   // DELETE USER
-  async function handleDelete(userId) {
+  async function handleDelete(userId: string) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this user?"
     );
@@ -190,7 +192,7 @@ export default function UsersPage() {
 
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     }
   }
 

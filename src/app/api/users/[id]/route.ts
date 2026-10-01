@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
 import Expense from "@/models/Expense";
-
+import type { IUser } from "@/types";
+import type { NextRequest } from "next/server";
 
 // GET /api/users/:id
 // Get one user
-export async function GET(request, { params }) {
+export async function GET(request: NextRequest, { params }: RouteContext<"/api/users/[id]">) {
   try {
     await connectDB();
 
@@ -45,12 +46,12 @@ export async function GET(request, { params }) {
 
 // PATCH /api/users/:id
 // Update a user
-export async function PATCH(request, { params }) {
+export async function PATCH(request: NextRequest, { params }: RouteContext<"/api/users/[id]">) {
   try {
     await connectDB();
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as Partial<IUser>;
 
     const { name, email, password } = body;
 
@@ -101,7 +102,7 @@ export async function PATCH(request, { params }) {
 
     await user.save();
 
-    const userResponse = user.toObject();
+    const userResponse: Partial<IUser> = user.toObject();
     delete userResponse.password;
 
     return NextResponse.json(userResponse, {
@@ -124,7 +125,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/users/:id
 // Delete a user
-export async function DELETE(request, { params }) {
+export async function DELETE(request: NextRequest, { params }: RouteContext<"/api/users/[id]">) {
   try {
     await connectDB();
 

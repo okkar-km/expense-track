@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, type Model } from "mongoose";
+import type { IExpense } from "@/types";
 
-const expenseSchema = new mongoose.Schema(
+const expenseSchema = new Schema<IExpense>(
   {
     title: {
       type: String,
@@ -41,8 +42,9 @@ const expenseSchema = new mongoose.Schema(
   }
 );
 
-const Expense =
-  mongoose.models.Expense ||
-  mongoose.model("Expense", expenseSchema);
+const Expense: Model<IExpense> =
+  (mongoose.models.Expense as Model<IExpense>) ??
+  mongoose.model<IExpense>("Expense", expenseSchema);
+
 
 export default Expense;

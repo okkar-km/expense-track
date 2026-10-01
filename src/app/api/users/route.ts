@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
-
+import type { IUser } from "@/types";
 
 // GET /api/users
 // Get all users
@@ -31,11 +31,11 @@ export async function GET() {
 
 // POST /api/users
 // Create a new user
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     await connectDB();
 
-    const body = await request.json();
+    const body = (await request.json()) as Partial<IUser>;
 
     const { name, email, password } = body;
 
@@ -75,7 +75,7 @@ export async function POST(request) {
     });
 
     // Do not return password to the client
-    const userResponse = user.toObject();
+    const userResponse: Partial<IUser> = user.toObject();
     delete userResponse.password;
 
     return NextResponse.json(userResponse, {

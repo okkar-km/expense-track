@@ -4,16 +4,18 @@ import Expense from "@/models/Expense";
 import User from "@/models/User";
 import Category from "@/models/Category";
 import mongoose from "mongoose";
+import type { IExpenseInput } from "@/types";
+import type { NextRequest } from "next/server";
 
 
-function isValidId(id) {
+function isValidId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
 
 // GET /api/expenses/:id
 // Get one expense
-export async function GET(request, { params }) {
+export async function GET(request: NextRequest, { params }: RouteContext<"/api/expenses/[id]">) {
   try {
     await connectDB();
 
@@ -65,7 +67,7 @@ export async function GET(request, { params }) {
 
 // PATCH /api/expenses/:id
 // Update an expense
-export async function PATCH(request, { params }) {
+export async function PATCH(request: NextRequest, { params }: RouteContext<"/api/expenses/[id]">) {
   try {
     await connectDB();
 
@@ -82,7 +84,7 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as Partial<IExpenseInput>;
 
     const {
       title,
@@ -193,7 +195,7 @@ export async function PATCH(request, { params }) {
         );
       }
 
-      expense.userId = userId;
+      expense.userId = new mongoose.Types.ObjectId(userId);
     }
 
     // Update Category
@@ -222,7 +224,7 @@ export async function PATCH(request, { params }) {
         );
       }
 
-      expense.categoryId = categoryId;
+      expense.categoryId = new mongoose.Types.ObjectId(categoryId);
     }
 
     await expense.save();
@@ -251,7 +253,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/expenses/:id
 // Delete an expense
-export async function DELETE(request, { params }) {
+export async function DELETE(request: NextRequest, { params }: RouteContext<"/api/expenses/[id]">) {
   try {
     await connectDB();
 

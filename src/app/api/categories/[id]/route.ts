@@ -3,16 +3,17 @@ import connectDB from "@/lib/mongodb";
 import Category from "@/models/Category";
 import Expense from "@/models/Expense";
 import mongoose from "mongoose";
+import type { ICategory } from "@/types";
+import type { NextRequest } from "next/server";
 
-
-function isValidId(id) {
+function isValidId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
 
 // GET /api/categories/:id
 // Get one category
-export async function GET(request, { params }) {
+export async function GET(request: NextRequest, { params }: RouteContext<"/api/categories/[id]">) {
   try {
     await connectDB();
 
@@ -62,7 +63,7 @@ export async function GET(request, { params }) {
 
 // PATCH /api/categories/:id
 // Update a category
-export async function PATCH(request, { params }) {
+export async function PATCH(request: NextRequest, { params }: RouteContext<"/api/categories/[id]">) {
   try {
     await connectDB();
 
@@ -79,7 +80,7 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as Partial<ICategory>;
 
     const { name, description } = body;
 
@@ -158,7 +159,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/categories/:id
 // Delete a category
-export async function DELETE(request, { params }) {
+export async function DELETE(request: NextRequest, { params }: RouteContext<"/api/categories/[id]">) {
   try {
     await connectDB();
 

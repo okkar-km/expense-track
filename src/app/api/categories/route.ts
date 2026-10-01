@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Category from "@/models/Category";
-
+import type { ICategory } from "@/types";
 
 // GET /api/categories
 // Get all categories
@@ -33,11 +33,11 @@ export async function GET() {
 
 // POST /api/categories
 // Create a new category
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     await connectDB();
 
-    const body = await request.json();
+    const body = await request.json() as Partial<ICategory>;
 
     const { name, description } = body;
 

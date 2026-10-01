@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { UserDTO, CategoryDTO, ExpenseDTO } from "@/types";
 
 export default function DashboardPage() {
-  const [users, setUsers] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [expenses, setExpenses] = useState([]);
+  const [users, setUsers] = useState<UserDTO[]>([]);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+  const [expenses, setExpenses] = useState<ExpenseDTO[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -75,7 +76,17 @@ export default function DashboardPage() {
   );
 
   // Spending by category
-  const spendingByCategory = {};
+  const spendingByCategory: Record<string, number> = expenses.reduce(
+    (acc, expense) => {
+      const name = expense.categoryId?.name;
+
+      if (name) {
+        acc[name] = (acc[name] ?? 0) + Number(expense.amount);
+      }
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
   expenses.forEach((expense) => {
     const categoryName = expense.categoryId?.name || "Uncategorized";

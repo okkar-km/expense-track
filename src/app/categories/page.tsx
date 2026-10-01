@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import type { CategoryDTO } from "@/types";
+import { errorMessage } from "@/utils/errors";
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   // Form fields
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   // Editing state
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Search
   const [search, setSearch] = useState("");
@@ -63,7 +65,7 @@ export default function CategoriesPage() {
   }
 
   // CREATE / UPDATE CATEGORY
-  async function handleSubmit(event) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -122,14 +124,14 @@ export default function CategoriesPage() {
       resetForm();
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     } finally {
       setSaving(false);
     }
   }
 
   // EDIT CATEGORY
-  function handleEdit(category) {
+  function handleEdit(category: CategoryDTO) {
     setEditingId(category._id);
     setName(category.name || "");
     setDescription(category.description || "");
@@ -144,7 +146,7 @@ export default function CategoriesPage() {
   }
 
   // DELETE CATEGORY
-  async function handleDelete(categoryId) {
+  async function handleDelete(categoryId: string) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this category?"
     );
@@ -177,7 +179,7 @@ export default function CategoriesPage() {
       await loadCategories();
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(errorMessage(error));
     }
   }
 
@@ -269,7 +271,7 @@ export default function CategoriesPage() {
                 setDescription(event.target.value)
               }
               placeholder="Enter category description"
-              rows="4"
+              rows={4}
             />
           </div>
 

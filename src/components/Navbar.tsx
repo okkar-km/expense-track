@@ -8,7 +8,7 @@ const links = [
   { href: "/users", label: "Users" },
   { href: "/categories", label: "Categories" },
   { href: "/expenses", label: "Expenses" },
-];
+] as const;
 
 export default function Navbar() {
   const pathname = usePathname();
