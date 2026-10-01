@@ -8,7 +8,7 @@ totals, the current month, and per-category breakdowns.
 
 ![Dashboard screenshot](./docs/screenshots/dashboard.png)
 ![Expenses page screenshot 1](./docs/screenshots/expenses_1.png)
-![Expenses page screenshot 2](./docs/screenshots/expenses_1.png)
+![Expenses page screenshot 2](./docs/screenshots/expenses_2.png)
 
 ## Team
 
