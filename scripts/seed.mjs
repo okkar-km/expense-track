@@ -15,6 +15,7 @@ if (!process.argv.includes("--force")) {
   process.exit(1);
 }
 
+// A date N days before today, used for expenses in previous months.
 function daysAgo(n) {
   const date = new Date();
 
@@ -22,6 +23,32 @@ function daysAgo(n) {
   date.setHours(12, 0, 0, 0);
 
   return date;
+}
+
+// Today, at midday.
+function today() {
+  const now = new Date();
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    12
+  );
+}
+
+// Day N of the CURRENT month, clamped so it never lands in the future.
+// This keeps the dashboard's "this month" figures populated no matter
+// what day of the month the seed happens to be run.
+function thisMonth(day) {
+  const now = new Date();
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    Math.min(day, now.getDate()),
+    12
+  );
 }
 
 const categoryData = [
@@ -69,30 +96,38 @@ const userData = [
   },
 ];
 
-// [title, amount, daysAgo, category, userIndex]
+// [title, amount, date, category, userIndex]
+// Dates are resolved once at load time. Current-month rows use thisMonth()
+// so the dashboard always has data for the month you are viewing.
 const expenseData = [
-  ["Lunch at campus cafe", 180, 1, "Food & Dining", 0],
-  ["Monthly bus pass", 620, 2, "Transportation", 0],
-  ["USB-C cable", 250, 3, "Shopping", 0],
-  ["Groceries - weekly", 1450, 4, "Food & Dining", 0],
-  ["Spotify premium", 89, 5, "Entertainment", 0],
-  ["Programming book", 600, 6, "Education", 0],
-  ["Coffee with friends", 320, 7, "Food & Dining", 1],
-  ["Taxi to airport", 480, 8, "Transportation", 1],
-  ["Electricity bill", 1150, 9, "Bills", 0],
-  ["Concert ticket", 950, 10, "Entertainment", 1],
-  ["Winter jacket", 2400, 12, "Shopping", 2],
-  ["Online course", 1800, 14, "Education", 1],
-  ["Team lunch", 860, 16, "Food & Dining", 2],
-  ["Fuel refill", 2100, 18, "Transportation", 2],
-  ["Internet bill", 990, 20, "Bills", 0],
-  ["Phone case", 390, 22, "Shopping", 0],
-  ["Restaurant dinner", 1250, 24, "Food & Dining", 1],
-  ["Netflix subscription", 450, 26, "Entertainment", 2],
-  ["Rent", 9000, 35, "Bills", 0],
-  ["Gym membership", 1200, 42, "Entertainment", 2],
-  ["Textbooks", 1500, 55, "Education", 0],
-  ["Taxi home", 260, 70, "Transportation", 1],
+  // Today
+  ["Coffee and pastry", 180, today(), "Food & Dining", 0],
+  ["Top up mobile balance", 350, today(), "Bills", 1],
+  ["Stationery for coursework", 240, today(), "Education", 2],
+
+  // Rest of the current month
+  ["Weekly groceries", 1450, thisMonth(2), "Food & Dining", 0],
+  ["Monthly bus pass", 620, thisMonth(4), "Transportation", 0],
+  ["USB-C cable", 250, thisMonth(6), "Shopping", 0],
+  ["Coffee with friends", 320, thisMonth(8), "Food & Dining", 1],
+  ["Electricity bill", 1150, thisMonth(10), "Bills", 0],
+  ["Winter jacket", 2400, thisMonth(12), "Shopping", 2],
+  ["Concert ticket", 950, thisMonth(14), "Entertainment", 1],
+  ["Online course", 1800, thisMonth(16), "Education", 1],
+  ["Team lunch", 860, thisMonth(18), "Food & Dining", 2],
+  ["Fuel refill", 2100, thisMonth(20), "Transportation", 2],
+  ["Internet bill", 990, thisMonth(22), "Bills", 0],
+  ["Phone case", 390, thisMonth(24), "Shopping", 0],
+  ["Restaurant dinner", 1250, thisMonth(26), "Food & Dining", 1],
+  ["Spotify premium", 89, thisMonth(28), "Entertainment", 2],
+
+  // Previous months
+  ["Rent", 9000, daysAgo(35), "Bills", 0],
+  ["Gym membership", 1200, daysAgo(42), "Entertainment", 2],
+  ["Netflix subscription", 450, daysAgo(55), "Entertainment", 2],
+  ["Textbooks", 1500, daysAgo(70), "Education", 0],
+  ["Taxi home", 260, daysAgo(88), "Transportation", 1],
+  ["Flight ticket", 3200, daysAgo(120), "Transportation", 0],
 ];
 
 async function seed() {
@@ -116,10 +151,10 @@ async function seed() {
   );
 
   const expenseDocs = expenseData.map(
-    ([title, amount, days, categoryName, userIndex]) => ({
+    ([title, amount, date, categoryName, userIndex]) => ({
       title,
       amount,
-      date: daysAgo(days),
+      date,
       description: `${title} (demo data)`,
       userId: users[userIndex]._id,
       categoryId: categories.find(
