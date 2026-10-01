@@ -4,17 +4,15 @@ A full-stack expense tracking application built with Next.js and MongoDB. Users 
 record expenses against categories, and a dashboard summarises spending across
 totals, the current month, and per-category breakdowns.
 
-<!-- Replace the two lines below with real screenshots once captured -->
-
 ![Dashboard screenshot](./docs/screenshots/dashboard.png)
 ![Expenses page screenshot 1](./docs/screenshots/expenses_1.png)
 ![Expenses page screenshot 2](./docs/screenshots/expenses_2.png)
 
 ## Team
 
-| Name | Student ID | Repository |
-| --- | --- | --- |
-| Okkar Kaung Myat | 6632104 | [github.com/okkar-km/expense-track](https://github.com/okkar-km/expense-track) |
+| Name | Repository |
+| --- | --- |
+| Okkar Kaung Myat | [github.com/okkar-km/expense-track](https://github.com/okkar-km/expense-track) |
 
 ## Features
 
@@ -158,17 +156,9 @@ scripts/seed.mjs        Demo data seeder
 
 ## Deployment
 
-<!-- Add the public URL here after deploying -->
-
-Live URL: `https://REPLACE_ME`
+Live URL: `https://expense-track.indonesiacentral.cloudapp.azure.com/dashboard`
 
 The application is deployed on an Azure virtual machine. Nginx terminates HTTPS and
 proxies to the Next.js production server on port 3000. MongoDB runs locally on the
-same machine and is reachable only over `127.0.0.1`. See `docs/DEPLOYMENT.md` for the
-full setup.
+same machine and is reachable only over `127.0.0.1`.
 
-## Security Notes
-
-This is an academic prototype and does not implement authentication. Passwords are
-stored in plaintext and excluded from API responses, but no login or session handling
-is provided. Deploy it on a private URL only.
